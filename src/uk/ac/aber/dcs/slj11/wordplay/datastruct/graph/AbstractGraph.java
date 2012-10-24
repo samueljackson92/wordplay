@@ -114,4 +114,8 @@ public abstract class AbstractGraph<Key> {
 	public boolean nodeIsVisited(Key key) {
 		return getNodes().get(key).isVisited();
 	}
+	
+	public Node<Key> getNode(Key key) {
+		return nodes.get(key);
+	}
 }

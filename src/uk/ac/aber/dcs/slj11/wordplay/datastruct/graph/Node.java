@@ -14,6 +14,10 @@ public class Node<Key> {
 	 */
 	private LinkedList<Key> neighbours;
 	
+	private int fscore = 0;
+	private int gscore = -1;
+	private Key key;
+	
 	/**
 	 * Stores whether this node has been visited in any given graph traversal.
 	 */
@@ -64,5 +68,29 @@ public class Node<Key> {
 	 */
 	public void setNeighbours(LinkedList<Key> neighbours) {
 		this.neighbours = neighbours;
+	}
+
+	public int getFscore() {
+		return fscore;
+	}
+
+	public void setFscore(int fscore) {
+		this.fscore = fscore;
+	}
+
+	public Key getKey() {
+		return key;
+	}
+
+	public void setKey(Key key) {
+		this.key = key;
+	}
+
+	public int getGscore() {
+		return gscore;
+	}
+
+	public void setGscore(int gscore) {
+		this.gscore = gscore;
 	}
 }

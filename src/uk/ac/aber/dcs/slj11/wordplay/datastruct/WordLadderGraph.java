@@ -1,9 +1,12 @@
 package uk.ac.aber.dcs.slj11.wordplay.datastruct;
 
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
+
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.graph.AbstractGraph;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.graph.Node;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Queue;
@@ -30,6 +33,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		//make nodes on graph
 		for (String word : words) {
 			addNode(word);
+			getNode(word).setKey(word);
 		}
 	
 		//make the edges between nodes
@@ -80,7 +84,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 	 */
 	public Stack<String> discovery(String start, String finish) {
 		path = new Stack<String>();
-		boolean result = breadthFirstSearch(start, finish);
+		boolean result = aStarSearch(start, finish);
 		
 		if(!result) {
 			path.clear();
@@ -154,7 +158,9 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		
 		//run search while there are still nodes in the frontier
 		//and a solution has not been found.
+		int count = 0;
 		while (!frontier.isEmpty() && !result) {
+			System.out.println(count++);
 			String node = frontier.remove();
 			//check is this node is the goal
 			if(node.equals(goal)) {
@@ -240,7 +246,64 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		return count;
 	}
 	
-	private void aStarSearch(String word, String goal) {
+	private boolean aStarSearch(String start, String goal) {
+		boolean result = false;
+		PriorityQueue<Node<String>> frontier = new PriorityQueue<Node<String>>(10, new Comparator<Node<String>>() {
+
+			@Override
+			public int compare(Node<String> arg0, Node<String> arg1) {
+				return arg0.getFscore() - arg1.getFscore();
+			}
+			
+		});
 		
+		//hashtable to store links to the previous nodes in path
+		Hashtable<String, String> previous = new Hashtable<String, String>();
+		
+		//add start to frontier
+		frontier.offer(getNode(start));
+		getNode(start).setGscore(0);
+		getNode(start).setFscore(0 + hammingDistance(start, goal));
+		//run search while there are still nodes in the frontier
+		//and a solution has not been found.
+		int count = 0;
+		while (!frontier.isEmpty() && !result) {
+			System.out.println(count++);
+			//remove node with lowest fscore
+			String node = frontier.remove().getKey();
+			//check is this node is the goal
+			if(node.equals(goal)) {
+				result = true;
+				//break;
+			
+			//else continue search child nodes
+			} else {
+				for(String child : getNeighbors(node)){
+					int tentativegscore = getNode(node).getGscore() + 1;
+					if((!nodeIsVisited(child) || tentativegscore <= getNode(child).getGscore() ||
+							getNode(child).getGscore() < 0) && !frontier.contains(child)){
+						setNodeVisited(child);
+						getNode(child).setGscore(tentativegscore);
+						getNode(child).setFscore(tentativegscore + hammingDistance(child, goal));
+						frontier.offer(getNode(child)); //add child to frontier
+						previous.put(child, node); //record a link from this node back to it's parent
+					}
+				}
+			}
+		}
+		
+		//if search was successful, 
+		//build path from goal to solution
+		if(result) {
+			path.push(goal);
+			
+			String current = goal;
+			while(!current.equals(start)){
+				current = previous.get(current);
+				path.push(current);
+			}
+		}
+		
+		return result;
 	}
 }
