@@ -239,4 +239,8 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		}
 		return count;
 	}
+	
+	private void aStarSearch(String word, String goal) {
+		
+	}
 }
