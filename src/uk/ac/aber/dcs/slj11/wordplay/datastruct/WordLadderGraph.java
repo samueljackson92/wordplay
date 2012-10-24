@@ -1,6 +1,5 @@
 package uk.ac.aber.dcs.slj11.wordplay.datastruct;
 
-import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,8 +8,8 @@ import java.util.PriorityQueue;
 
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.graph.AbstractGraph;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.graph.Node;
-import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Queue;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Stack;
+import uk.ac.aber.dcs.slj11.wordplay.util.WordLadderComparator;
 
 /**
  * Data structure to represent the graph of a set of words of the same length.
@@ -84,7 +83,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 	 */
 	public Stack<String> discovery(String start, String finish) {
 		path = new Stack<String>();
-		boolean result = breadthFirstSearch(start, finish);
+		boolean result = aStarSearch(start, finish);
 		
 		if(!result) {
 			path.clear();
@@ -138,40 +137,49 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		return result;
 	}
 	
-	/**
-	 * Implementation of a breadth first search to traverse the graph to a given goal.
-	 * In order to record the path, the algorithm effectively works like Dijkstras algorithm, but without
-	 * considering edge weights as all edges weigh 1.
-	 * @param start Node to start the search from.
-	 * @param goal Target node to head for.
-	 * @return whether the search was successful
-	 */
-	private boolean breadthFirstSearch(String start, String goal){
+	private boolean aStarSearch(String start, String goal) {
 		boolean result = false;
-		Queue<String> frontier = new Queue<String>();
+		PriorityQueue<Node<String>> frontier = new PriorityQueue<Node<String>>(10, new WordLadderComparator());
 		
 		//hashtable to store links to the previous nodes in path
 		Hashtable<String, String> previous = new Hashtable<String, String>();
 		
 		//add start to frontier
-		frontier.insert(start);
+		frontier.offer(getNode(start));
+		
+		//set initial path cost and path cost estimate
+		setPathCost(start, 0);
+		setPathCostEstimate(start, 0 + hammingDistance(start, goal));
 		
 		//run search while there are still nodes in the frontier
 		//and a solution has not been found.
-		int count = 0;
+		
 		while (!frontier.isEmpty() && !result) {
-			System.out.println(count++);
-			String node = frontier.remove();
-			//check is this node is the goal
+			
+			//remove node with lowest estimate path cost
+			String node = frontier.remove().getKey();
+			
+			//check if this node is the goal
 			if(node.equals(goal)) {
 				result = true;
 			
 			//else continue search child nodes
 			} else {
 				for(String child : getNeighbors(node)){
-					if(!nodeIsVisited(child)){
+					int tentativegscore = getPathCost(node) + 1;
+					
+					//check if node has been visited,
+					//or if already marked for exploration
+					//or if it may still offer a shorter path.
+					if((!nodeIsVisited(child) || tentativegscore <= getPathCost(child)
+							|| getPathCost(child) < 0) && !frontier.contains(child)) {
+						
 						setNodeVisited(child);
-						frontier.insert(child); //add child to frontier
+						//set path cost and estimate path length
+						setPathCost(child, tentativegscore);
+						setPathCostEstimate(child, tentativegscore + hammingDistance(child, goal));
+						
+						frontier.offer(getNode(child)); //add child to frontier
 						previous.put(child, node); //record a link from this node back to it's parent
 					}
 				}
@@ -228,7 +236,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 	}
 	
 	/**
-	 * Find the difference between two strings of equal length
+	 * Finds the difference between two strings of equal length.
 	 * @param word1 first string to be compared
 	 * @param word2 second string to be compared
 	 * @return
@@ -244,66 +252,5 @@ public class WordLadderGraph extends AbstractGraph<String> {
 			}
 		}
 		return count;
-	}
-	
-	private boolean aStarSearch(String start, String goal) {
-		boolean result = false;
-		PriorityQueue<Node<String>> frontier = new PriorityQueue<Node<String>>(10, new Comparator<Node<String>>() {
-
-			@Override
-			public int compare(Node<String> arg0, Node<String> arg1) {
-				return arg0.getFscore() - arg1.getFscore();
-			}
-			
-		});
-		
-		//hashtable to store links to the previous nodes in path
-		Hashtable<String, String> previous = new Hashtable<String, String>();
-		
-		//add start to frontier
-		frontier.offer(getNode(start));
-		getNode(start).setGscore(0);
-		getNode(start).setFscore(0 + hammingDistance(start, goal));
-		//run search while there are still nodes in the frontier
-		//and a solution has not been found.
-		int count = 0;
-		while (!frontier.isEmpty() && !result) {
-			System.out.println(count++);
-			//remove node with lowest fscore
-			String node = frontier.remove().getKey();
-			//check is this node is the goal
-			if(node.equals(goal)) {
-				result = true;
-				//break;
-			
-			//else continue search child nodes
-			} else {
-				for(String child : getNeighbors(node)){
-					int tentativegscore = getNode(node).getGscore() + 1;
-					if((!nodeIsVisited(child) || tentativegscore <= getNode(child).getGscore() ||
-							getNode(child).getGscore() < 0) && !frontier.contains(child)){
-						setNodeVisited(child);
-						getNode(child).setGscore(tentativegscore);
-						getNode(child).setFscore(tentativegscore + hammingDistance(child, goal));
-						frontier.offer(getNode(child)); //add child to frontier
-						previous.put(child, node); //record a link from this node back to it's parent
-					}
-				}
-			}
-		}
-		
-		//if search was successful, 
-		//build path from goal to solution
-		if(result) {
-			path.push(goal);
-			
-			String current = goal;
-			while(!current.equals(start)){
-				current = previous.get(current);
-				path.push(current);
-			}
-		}
-		
-		return result;
 	}
 }

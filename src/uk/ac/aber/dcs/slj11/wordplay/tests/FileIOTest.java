@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.ac.aber.dcs.slj11.wordplay.FileIO;
+import uk.ac.aber.dcs.slj11.wordplay.util.FileIO;
 
 public class FileIOTest {
 

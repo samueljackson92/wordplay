@@ -7,9 +7,9 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.ac.aber.dcs.slj11.wordplay.FileIO;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.WordLadderGraph;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Stack;
+import uk.ac.aber.dcs.slj11.wordplay.util.FileIO;
 
 public class WordLadderGraphTest {
 
@@ -19,72 +19,72 @@ public class WordLadderGraphTest {
 	public void setUp() throws Exception {
 		g = new WordLadderGraph();
 		FileIO fio = new FileIO();
-		fio.loadFile("dict4.dat");
+		fio.loadFile("dict3.dat");
 		g.makeGraph(fio.getWordList());
 	}
 	
-//	@Test
-//	public void testMakeGraph(){
-//		makeSmallGraph();
-//		assertNotNull(g.getNodes());
-//	}
-//	
-//	@Test
-//	public void testMakeGraphCorrectSize() {
-//		makeSmallGraph();
-//		assertEquals(g.getNodes().size(), 4);
-//	}
-//	
-//	@Test
-//	public void testGenerate() {
-//		Stack<String> path = g.generate("bed", 3);
-//		assertEquals(path.size(), 3);
-//	}
-//	
-//	@Test
-//	public void testValidBoundaryDiscovery(){
-//		Stack<String> path = g.generate("bed", 492);
-//		assertEquals(path.size(), 492);
-//		
-//	}
-//
-//	@Test
-//	public void testInvalidBoundaryGenerate() {
-//		Stack<String> path = g.generate("bed", 494);
-//		assertEquals(path.size(), 0);
-//	}
-//	
-//	@Test
-//	public void testInvalidGenerate() {
-//		Stack<String> path = g.generate("bed", 1000);
-//		assertEquals(path.size(), 0);
-//	}
-//	
-//	@Test(expected=NullPointerException.class)
-//	public void testInvalidInputGenerate() {
-//		g.generate("fight", 10);
-//		fail("Should have thrown exception!");
-//	}
+	@Test
+	public void testMakeGraph(){
+		makeSmallGraph();
+		assertNotNull(g.getNodes());
+	}
+	
+	@Test
+	public void testMakeGraphCorrectSize() {
+		makeSmallGraph();
+		assertEquals(g.getNodes().size(), 4);
+	}
+	
+	@Test
+	public void testGenerate() {
+		Stack<String> path = g.generate("bed", 3);
+		assertEquals(path.size(), 3);
+	}
+	
+	@Test
+	public void testValidBoundaryDiscovery(){
+		Stack<String> path = g.generate("bed", 492);
+		assertEquals(path.size(), 492);
+		
+	}
+
+	@Test
+	public void testInvalidBoundaryGenerate() {
+		Stack<String> path = g.generate("bed", 494);
+		assertEquals(path.size(), 0);
+	}
+	
+	@Test
+	public void testInvalidGenerate() {
+		Stack<String> path = g.generate("bed", 1000);
+		assertEquals(path.size(), 0);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testInvalidInputGenerate() {
+		g.generate("fight", 10);
+		fail("Should have thrown exception!");
+	}
 
 	@Test
 	public void testValidDiscovery() {
-		Stack<String> path = g.discovery("make", "cool");
+		Stack<String> path = g.discovery("bin", "bed");
 		System.out.println(path);
-		assertTrue(path.size() == 6);
+		assertTrue(path.size() == 3);
 	}
-//	
-//	@Test
-//	public void testInvalidDiscovery() {
-//		Stack<String> path = g.discovery("bin", "sik");
-//		assertTrue(path.isEmpty());
-//	}
-//	
-//	@Test(expected=NullPointerException.class)
-//	public void testInvalidInputDiscovery() {
-//		g.discovery("flight", "");
-//		fail("Should have thrown exception!");
-//	}
-//	
+	
+	@Test
+	public void testInvalidDiscovery() {
+		Stack<String> path = g.discovery("bin", "sik");
+		assertTrue(path.isEmpty());
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testInvalidInputDiscovery() {
+		g.discovery("flight", "");
+		fail("Should have thrown exception!");
+	}
+	
 	////////////////////////////////////////
 	//End of JUnit Test Cases
 	////////////////////////////////////////

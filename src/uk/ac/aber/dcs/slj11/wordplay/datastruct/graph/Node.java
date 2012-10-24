@@ -14,8 +14,8 @@ public class Node<Key> {
 	 */
 	private LinkedList<Key> neighbours;
 	
-	private int fscore = 0;
-	private int gscore = -1;
+	private int pathCost = -1;
+	private int pathCostEstimate = -1;
 	private Key key;
 	
 	/**
@@ -70,12 +70,12 @@ public class Node<Key> {
 		this.neighbours = neighbours;
 	}
 
-	public int getFscore() {
-		return fscore;
+	public int getPathCostEstimate() {
+		return pathCostEstimate;
 	}
 
-	public void setFscore(int fscore) {
-		this.fscore = fscore;
+	public void setPathCostEstimate(int cost) {
+		pathCostEstimate = cost;
 	}
 
 	public Key getKey() {
@@ -86,11 +86,11 @@ public class Node<Key> {
 		this.key = key;
 	}
 
-	public int getGscore() {
-		return gscore;
+	public int getPathCost() {
+		return pathCost;
 	}
 
-	public void setGscore(int gscore) {
-		this.gscore = gscore;
+	public void setPathCost(int cost) {
+		pathCost = cost;
 	}
 }

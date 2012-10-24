@@ -7,9 +7,9 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import uk.ac.aber.dcs.slj11.wordplay.FileIO;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.WordLadderGraph;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Stack;
+import uk.ac.aber.dcs.slj11.wordplay.util.FileIO;
 
 /**
  * Listener for the MainWindow.

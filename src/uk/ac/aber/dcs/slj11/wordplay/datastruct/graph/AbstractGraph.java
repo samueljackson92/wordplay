@@ -77,6 +77,8 @@ public abstract class AbstractGraph<Key> {
 		while(it.hasNext()) {
 			Entry<Key,Node<Key>> e = it.next();
 			e.getValue().setVisited(false);
+			e.getValue().setPathCost(-1);
+			e.getValue().setPathCostEstimate(-1);
 		}
 	}
 	
@@ -117,5 +119,21 @@ public abstract class AbstractGraph<Key> {
 	
 	public Node<Key> getNode(Key key) {
 		return nodes.get(key);
+	}
+	
+	public int getPathCost(Key key) {
+		return nodes.get(key).getPathCost();
+	}
+	
+	public void setPathCost(Key key, int cost) {
+		nodes.get(key).setPathCost(cost);
+	}
+	
+	public int getPathCostEstimate(Key key) {
+		return nodes.get(key).getPathCostEstimate();
+	}
+	
+	public void setPathCostEstimate(Key key, int cost) {
+		nodes.get(key).setPathCostEstimate(cost);
 	}
 }
