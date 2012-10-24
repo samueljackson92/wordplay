@@ -4,6 +4,12 @@ import java.util.Comparator;
 
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.graph.Node;
 
+/**
+ * Comparator class used to evaluate the priority of word ladder nodes stored in a Java priority queue.
+ * Calculates the difference between the distance-cost estimate for each node in the queue.
+ * @author Samuel Jackson (slj11@aber.ac.uk)
+ *
+ */
 public class WordLadderComparator implements Comparator<Node<String>> {
 
 	@Override

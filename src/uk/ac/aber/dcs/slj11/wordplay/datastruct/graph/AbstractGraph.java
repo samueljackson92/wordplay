@@ -47,7 +47,7 @@ public abstract class AbstractGraph<Key> {
 	
 	/**
 	 * Return the total number of nodes in the graph
-	 * @return
+	 * @return total node count
 	 */
 	public int numberOfNodes() {
 		return nodes.size();
@@ -111,28 +111,53 @@ public abstract class AbstractGraph<Key> {
 	/**
 	 * Check if the given node has been visited.
 	 * @param key reference to the node
-	 * @return
+	 * @return whether the node has been visited
 	 */
 	public boolean nodeIsVisited(Key key) {
 		return getNodes().get(key).isVisited();
 	}
 	
+	/**
+	 * Method to get a node from the graph.
+	 * @param key reference to the node in the graph.
+	 * @return the node reference by the given key.
+	 */
 	public Node<Key> getNode(Key key) {
 		return nodes.get(key);
 	}
 	
+	/**
+	 * Get the path cost of the given node.
+	 * @param key reference to the node.
+	 * @return the path cost of the referenced node
+	 */
 	public int getPathCost(Key key) {
 		return nodes.get(key).getPathCost();
 	}
 	
+	/**
+	 * Set the path cost of a given node.
+	 * @param key reference to the node.
+	 * @param cost new cost of reaching this node.
+	 */
 	public void setPathCost(Key key, int cost) {
 		nodes.get(key).setPathCost(cost);
 	}
 	
+	/**
+	 * Get the distance plus cost estimate of the given node.
+	 * @param key reference to the node.
+	 * @return the distance-cost estimate of this node.
+	 */
 	public int getPathCostEstimate(Key key) {
 		return nodes.get(key).getPathCostEstimate();
 	}
 	
+	/**
+	 * Set the distance plus cost estimate for the given node.
+	 * @param key reference to the given node.
+	 * @param cost the new distance-cost estimate of this node.
+	 */
 	public void setPathCostEstimate(Key key, int cost) {
 		nodes.get(key).setPathCostEstimate(cost);
 	}

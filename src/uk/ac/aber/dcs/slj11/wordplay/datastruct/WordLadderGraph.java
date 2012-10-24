@@ -25,8 +25,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 	
 	/**
 	 * Generates a new graph object given a list of strings.
-	 * @param words The list of words to use for generation
-	 * @return graph The newly made graph
+	 * @param words The list of words to use for generation.
 	 */
 	public void makeGraph(LinkedList<String> words) {
 		//make nodes on graph
@@ -98,7 +97,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 	 * @param word The current node being looked at
 	 * @param currentDepth The current depth in the graph
 	 * @param maxDepth The maximum depth to descend before quitting the search
-	 * @return
+	 * @return whether the search was successful or not.
 	 */
 	private boolean depthLimitedSearch(String word, int currentDepth, int maxDepth) {
 		boolean result = false;
@@ -137,6 +136,13 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		return result;
 	}
 	
+	/**
+	 * Implementation of an A* search algorithm. Used by discovery mode to find the shortest path between two nodes.
+	 * Uses Hamming distance as the heuristic path cost function.
+	 * @param start The node to start from
+	 * @param goal The node to search for.
+	 * @return whether the search was successful or not.
+	 */
 	private boolean aStarSearch(String start, String goal) {
 		boolean result = false;
 		PriorityQueue<Node<String>> frontier = new PriorityQueue<Node<String>>(10, new WordLadderComparator());
@@ -239,7 +245,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 	 * Finds the difference between two strings of equal length.
 	 * @param word1 first string to be compared
 	 * @param word2 second string to be compared
-	 * @return
+	 * @return the difference between two strings
 	 */
 	private int hammingDistance(String word1, String word2) {
 		int count = 0;
