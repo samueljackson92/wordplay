@@ -84,7 +84,7 @@ public class WordLadderGraph extends AbstractGraph<String> {
 	 */
 	public Stack<String> discovery(String start, String finish) {
 		path = new Stack<String>();
-		boolean result = aStarSearch(start, finish);
+		boolean result = breadthFirstSearch(start, finish);
 		
 		if(!result) {
 			path.clear();

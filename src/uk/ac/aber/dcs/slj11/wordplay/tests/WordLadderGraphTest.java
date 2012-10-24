@@ -68,7 +68,7 @@ public class WordLadderGraphTest {
 
 	@Test
 	public void testValidDiscovery() {
-		Stack<String> path = g.discovery("head", "foot");
+		Stack<String> path = g.discovery("make", "cool");
 		System.out.println(path);
 		assertTrue(path.size() == 6);
 	}
