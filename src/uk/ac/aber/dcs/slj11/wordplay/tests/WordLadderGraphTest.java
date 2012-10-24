@@ -3,12 +3,12 @@ package uk.ac.aber.dcs.slj11.wordplay.tests;
 import static org.junit.Assert.*;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.WordLadderGraph;
-import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Stack;
 import uk.ac.aber.dcs.slj11.wordplay.util.FileIO;
 
 public class WordLadderGraphTest {

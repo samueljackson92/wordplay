@@ -4,11 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.WordLadderGraph;
-import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Stack;
 import uk.ac.aber.dcs.slj11.wordplay.util.FileIO;
 
 /**

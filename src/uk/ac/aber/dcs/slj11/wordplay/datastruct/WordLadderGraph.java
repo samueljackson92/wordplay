@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
+import java.util.Stack;
 
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.graph.AbstractGraph;
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.graph.Node;
-import uk.ac.aber.dcs.slj11.wordplay.datastruct.list.Stack;
 import uk.ac.aber.dcs.slj11.wordplay.util.WordLadderComparator;
 
 /**
