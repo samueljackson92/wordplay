@@ -9,6 +9,7 @@ import java.util.Stack;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import uk.ac.aber.dcs.slj11.wordplay.datastruct.WordLadderGraph;
 import uk.ac.aber.dcs.slj11.wordplay.util.FileIO;
@@ -48,6 +49,8 @@ public class MainWindowListener implements ActionListener {
 	 */
 	public MainWindowListener(MainWindow window) {
 		this.window = window;
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("data files", "dat"));
 	}
 	
 	/**
