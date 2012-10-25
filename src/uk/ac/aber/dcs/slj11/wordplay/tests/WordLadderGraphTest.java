@@ -19,7 +19,7 @@ public class WordLadderGraphTest {
 	public void setUp() throws Exception {
 		g = new WordLadderGraph();
 		FileIO fio = new FileIO();
-		fio.loadFile("dict3.dat");
+		fio.loadFile("dict4.dat");
 		g.makeGraph(fio.getWordList());
 	}
 	
@@ -69,7 +69,6 @@ public class WordLadderGraphTest {
 	@Test
 	public void testValidDiscovery() {
 		Stack<String> path = g.discovery("bin", "bed");
-		System.out.println(path);
 		assertTrue(path.size() == 3);
 	}
 	

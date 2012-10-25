@@ -159,7 +159,6 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		
 		//run search while there are still nodes in the frontier
 		//and a solution has not been found.
-		
 		while (!frontier.isEmpty() && !result) {
 			
 			//remove node with lowest estimate path cost
@@ -172,18 +171,18 @@ public class WordLadderGraph extends AbstractGraph<String> {
 			//else continue search child nodes
 			} else {
 				for(String child : getNeighbors(node)){
-					int tentativegscore = getPathCost(node) + 1;
+					int tentativepathcost = getPathCost(node) + 1;
 					
 					//check if node has been visited,
 					//or if already marked for exploration
 					//or if it may still offer a shorter path.
-					if((!nodeIsVisited(child) || tentativegscore <= getPathCost(child)
+					if((!nodeIsVisited(child) || tentativepathcost <= getPathCost(child)
 							|| getPathCost(child) < 0) && !frontier.contains(child)) {
 						
 						setNodeVisited(child);
 						//set path cost and estimate path length
-						setPathCost(child, tentativegscore);
-						setPathCostEstimate(child, tentativegscore + hammingDistance(child, goal));
+						setPathCost(child, tentativepathcost);
+						setPathCostEstimate(child, tentativepathcost + hammingDistance(child, goal));
 						
 						frontier.offer(getNode(child)); //add child to frontier
 						previous.put(child, node); //record a link from this node back to it's parent

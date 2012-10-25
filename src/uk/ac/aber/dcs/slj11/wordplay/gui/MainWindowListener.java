@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Stack;
 
 import javax.swing.JFileChooser;
@@ -124,6 +125,7 @@ public class MainWindowListener implements ActionListener {
 					 window.updateOutput("Finding shortest path from " + word + " with "+ steps + " steps...");
 					 Stack<String> path = graph.generate(word, steps);
 					 if (!path.isEmpty()) {
+						 Collections.reverse(path);
 						 window.updateOutput(path.toString());
 					 } else {
 						 window.updateOutput("Unable to find path. Not enough unique words in graph!");
@@ -159,6 +161,7 @@ public class MainWindowListener implements ActionListener {
 					 Stack<String> path = graph.discovery(start, finish);
 					 if (!path.isEmpty()) {
 						 window.updateOutput("Optimal solution found with " + path.size() + " nodes");
+						 Collections.reverse(path);
 						 window.updateOutput(path.toString());
 					 } else {
 						 window.updateOutput("Unable to find path. Words are part of unconnected graphs!");
