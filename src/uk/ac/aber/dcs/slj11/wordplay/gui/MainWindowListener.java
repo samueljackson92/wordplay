@@ -50,7 +50,8 @@ public class MainWindowListener implements ActionListener {
 	public MainWindowListener(MainWindow window) {
 		this.window = window;
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("data files", "dat"));
+		fileChooser.setCurrentDirectory(new File("."));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Data Files (.dat)", "dat"));
 	}
 	
 	/**

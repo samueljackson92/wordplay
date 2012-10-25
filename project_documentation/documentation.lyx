@@ -227,8 +227,8 @@ FileIO
 AbstractGraph
 \series default
  - The abstract graph class is the most important class in this design.
- It is a data structure which is designed to represent a graph of nodes
- and edges.
+ It is a data structure which is designed to represent a graph consisting
+ of nodes and edges.
  The internal design for the representation of a graph uses an adjacency
  list
 \begin_inset CommandInset citation
@@ -270,6 +270,10 @@ reference "sub:Algorithms"
 ).
  This class also contains the make graph method which builds a graph out
  of the list of loaded words.
+ Note that the search algorithms in this class will return a stack of nodes
+ representing the path, as they both work backwards from the goal node.
+ Therefore all nodes should be in the right order with the top element represent
+ing the first node in the path.
 \end_layout
 
 \begin_layout Itemize
@@ -302,8 +306,8 @@ There are two key data structures that I plan to use to implement in my
  My justification for using a hashtable is that I want to be able to quickly
  lookup words to find information stored at their associated node.
  Using a hashtable is therefore quicker for this purpose as we do not have
- to potentially iterate thorough the graph every time we wish to access
- a node.
+ to potentially iterate through the graph every time we wish to access a
+ node.
 \end_layout
 
 \begin_layout Standard
@@ -326,7 +330,6 @@ The adjacency list data structure represented by both the abstract graph
  However, this graph/node data structure implementation is designed to have
  low coupling with the rest of the system, meaning that it can easily be
  lifted from this project and reused in future development.
- 
 \end_layout
 
 \begin_layout Standard
@@ -344,7 +347,6 @@ The graph/node pair also exhibits high cohesion.
  However, seeing as they are jointly supposed to represent a single data
  structure (a graph), I feel that this is a permissible exception as they
  are mainly designed to work in unison.
- 
 \end_layout
 
 \begin_layout Standard
@@ -497,7 +499,8 @@ key "russell+norvig"
 .
  The major modification being that this search can only return two states:
  whether we succeeded or failed to generate a word ladder of the target
- depth, as opposed to Russell and Norvig's three states.
+ depth, as opposed to Russell and Norvig's three states (solution found,
+ failed and cutoff).
 \end_layout
 
 \begin_layout Standard
@@ -789,7 +792,7 @@ function aStarSearch(start, goal) {
 
 \begin_layout Plain Layout
 
-			tentative-path-cost = get pathcost(node) + 1;
+			tentative_path_cost = get pathcost(node) + 1;
 \end_layout
 
 \begin_layout Plain Layout
@@ -804,7 +807,7 @@ function aStarSearch(start, goal) {
 
 \begin_layout Plain Layout
 
-					OR tentative-path-cost <= pathcost(child)
+					OR tentative_path_cost <= pathcost(child)
 \end_layout
 
 \begin_layout Plain Layout
@@ -829,7 +832,7 @@ function aStarSearch(start, goal) {
 
 \begin_layout Plain Layout
 
-					set pathcost(child) = tentative-path-cost;
+					set pathcost(child) = tentative_path_cost;
 \end_layout
 
 \begin_layout Plain Layout
@@ -839,7 +842,7 @@ function aStarSearch(start, goal) {
 
 \begin_layout Plain Layout
 
-						= tentative-path-cost + hamming-distance(child, goal);
+						= tentative_path_cost + hamming-distance(child, goal);
 \end_layout
 
 \begin_layout Plain Layout
@@ -953,7 +956,7 @@ In order to solve the problems outlined in the brief for this assignment,
  each its advantages and disadvantages against the other available options
  and the problem definition.
  In this section I justify why I chose to use a depth-limited search for
- generation and breadth-first search for discovery.
+ generation and A* search for discovery.
 \end_layout
 
 \begin_layout Standard
@@ -1001,8 +1004,8 @@ For the discovery mode of the program I have used a different search technique
  In order to find a path between two nodes in the graph, the program needs
  to implement a shortest path search algorithm.
  The depth-limited search is not appropriate for this problem because it
- is not guaranteed to find the optimal solution (as it evaluates deeper
- nodes first).
+ is not guaranteed to find an optimal solution (as it evaluates deeper nodes
+ first).
  Also, because of the depth limit, it is not guaranteed that to even find
  a solution!
 \end_layout
@@ -1014,19 +1017,21 @@ Clearly a different approach must be taken to solve this problem.
  Initially I started looking at uninformed search techniques.
  Of the main uninformed search techniques, the solutions which proved to
  be the most appropriate the the problem at hand were breadth-first search
- and iterative deepening depth-first search.
+ (with the path building technique outlined in Dijkstra's algorithm) and
+ iterative deepening depth-first search.
  Both of these options proved to be acceptable options which would be able
  to find optimum and complete solutions in a reasonable amount of time.
 \end_layout
 
 \begin_layout Standard
 However, I realized that my function for checking if two strings are adjacent
- could be used for more than checking if two given nodes are neighbors.
+ could provide additional information that could be of use to the program.
  This function calculated the Hamming distance of two nodes, which is the
  numerical letter difference between two strings.
- I realized that this could potentially be used as an heuristic to guide
+ I realized that this could potentially be used as a heuristic to guide
  an informed search algorithm to a specified goal, much in the same way
- that an n-puzzle can be solved using Manhattan distances as the heuristic.
+ that an n-puzzle can be solved quicker by using Manhattan distances as
+ the heuristic.
  This heuristic is also guaranteed to be admissible no matter what the word,
  as the Hamming distance between any given word and the goal word can never
  be more than the optimal path.
@@ -1037,7 +1042,7 @@ However, I realized that my function for checking if two strings are adjacent
 \begin_layout Standard
 I therefore chose to use the A* search algorithm for discovery mode, as
  this generally the most effective informed search technique; considering
- both path cost and heuristic estimate.
+ both path cost and a heuristic estimate.
  My implementation uses the Java standard library priority queue with a
  comparable object that I created myself.
  The comparable object is used to compare the distance-cost estimate (that
@@ -1049,7 +1054,7 @@ I therefore chose to use the A* search algorithm for discovery mode, as
  its path cost from the start node (simply an increase of one for every
  edge traversed) and calculating the Hamming distance for the current word.
  As the algorithm adds children to the queue, it also records a link back
- to the parent node so that we can rebuilt the path back from the goal to
+ to the parent node so that we can rebuild the path back from the goal to
  the start node.
 \end_layout
 
@@ -1058,11 +1063,15 @@ I feel that the A* search algorithm is a justified choice for finding the
  shortest path between two nodes in our graph.
  In the worst case scenario, where the start and goal nodes are part of
  unconnected graphs or are connected by a very long path, the search algorithm
- will behave much like a breadth-first search.
- But when the heuristic kicks in, there will be a noticeable gain in the
- number of nodes that the algorithm has the examine in order to reach the
- target.
- Simply compare the example of going from the word 
+ will behave much like a breadth-first search and no additional benefit
+ will occur.
+ As I was initially planning to use breadth-first search, there is effectively
+ no real loss to the time required to traverse the graph, even in the worst
+ case scenario.
+ But when the heuristic kicks in as the algorithm finds a node seemingly
+ closer to the goal, there will be a noticeable reduction in the number
+ of nodes that the algorithm has to examine in order to reach the target.
+ Simply compare the results of finding a path from the word 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3758,6 +3767,8 @@ The rest of this document provides a full print out of the final Java source
  code that makes up my application.
  Full Javadoc and a runnable jar file have also been submitted with the
  electronic copy of the assignment.
+ All of the code provided here has been complied and run from the command
+ line on both Ubuntu 12.04 and a standard Windows 7 machine in B23.
 \end_layout
 
 \end_body
