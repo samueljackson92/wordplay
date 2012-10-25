@@ -160,7 +160,6 @@ public class WordLadderGraph extends AbstractGraph<String> {
 		//run search while there are still nodes in the frontier
 		//and a solution has not been found.
 		while (!frontier.isEmpty() && !result) {
-			
 			//remove node with lowest estimate path cost
 			String node = frontier.remove().getKey();
 			
